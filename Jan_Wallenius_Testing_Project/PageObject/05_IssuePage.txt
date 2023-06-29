@@ -1,0 +1,83 @@
+
+### **Issue functionality Testsuit Overview**
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	Issue Test scenario. CRUD Operation: Create, Read, Update, Delete
+
+Pre Condition	Open Browser, Login, Created Project
+Post Condition	Close All Browsers
+Tags	Issue
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+HomeUrl = https://gitlab.com/
+ProjectName= XYZ
+IssueTitle= XYZ
+UpdatedIssueTitle= XYZX
+
+
+#******************** Test Cases *************************
+
+*** Test Cases ***
+
+# Positive Tests
+
+Create issue
+	Navigate To Home Page  HomeUrl
+	Select Project  ProjectName
+	Select Issues
+	Select New Issue
+	Input Title  IssueTitle
+	Select Type (Issue)
+	Input Description (optional)
+	Select Checkbox (optional)
+	Select Assignee (optional)
+	Select Milestone (optional)
+	Select Labels (optional)
+	Select Due date (optional)
+	Select Create issue
+	Verify That Page Should Contain IssueTitle
+
+
+Update title of issue
+	Navigate To Home Page  HomeUrl
+	Select Project  ProjectName
+	Select Issues
+	Select Issue  IssueTitle
+	Select Edit
+	Input Title  UpdatedIssueTitle
+	Select Save changes
+	Verify That Page Should Contain UpdatedIssueTitle
+
+
+Create second issue with previous updated title
+	Navigate To Home Page  HomeUrl
+	Select Project  ProjectName
+	Select Issues
+	Select New Issue
+	Input Title  UpdatedIssueTitle
+	Verify message Similar issues UpdatedIssueTitle #1 • ## minutes ago by user avatar • updated ## minutes ago
+	Select Type (Issue)
+	Input Description (optional)
+	Select Checkbox (optional)
+	Select Assignee (optional)
+	Select Milestone (optional)
+	Select Labels (optional)
+	Select Due date (optional)
+	Select Create issue
+	Verify That Page Should Contain UpdatedIssueTitle #2
+
+
+Delete first issue
+	Navigate To Home Page  HomeUrl
+	Select Project  ProjectName
+	Select Issues
+	Select Issue  UpdatedIssueTitle #1
+	Select Vertical dots menu > Delete issue
+	Select Delete issue
+	Verify That Page Should Contain message The issue was successfully deleted

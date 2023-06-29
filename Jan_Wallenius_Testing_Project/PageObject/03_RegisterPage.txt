@@ -1,0 +1,142 @@
+
+### **Register functionality Testsuit Overview**
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	Testing the register functionality. User Registration Test scenario with verification, valid and invalid credentials.
+
+Pre Condition	Open Browser
+Post Condition	Close All Browsers
+Tags	Register
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+# NOTE: Please Remove your login credential before uploading Assignments
+
+RegistUrl = https://gitlab.com/users/sign_up
+FirstName= XYZ
+LastName= XYZ
+UserName= XYZ
+eMail= XYZ@XYZ
+Password= ********
+Invalid_FirstName= XYZZZ
+Invalid_LastName= XYZZZ
+Invalid_Username= XYZZZ
+Invalid_eMail= XYZZZ
+Invalid_Password= ******
+Empty= 
+
+
+#******************** Test Cases *************************
+
+*** Test Cases ***
+
+# Positive Test
+
+Register User With Valid user Information
+	Navigate To Register Page  RegistUrl
+	Input Firstname  FirstName
+	Input Lastname  LastName
+    Input Username  UserName
+	Input Email  eMail
+    Input Password  Password
+    Submit Register Form
+    Verify Page Should Contain Welcome page
+
+
+# Negative Tests
+
+Error message Should Be Visible After Invalid Register Information With Empty Name
+	Navigate To Register Page  RegistUrl
+	Input Firstname  Empty
+	Input Lastname  Empty
+    Input Username  UserName
+	Input Email  eMail
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show This field is required
+
+
+Error message Should Be Visible After Invalid Register Information With Empty Username
+	Navigate To Register Page  RegistUrl
+	Input Firstname FirstName
+	Input Lastname  LastName
+    Input Username  Empty
+	Input Email  eMail
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show Username is too short (minimum is 2 characters)
+
+
+Error message Should Be Visible After Invalid Register Information With Empty And Space in Email
+	Navigate To Register Page  RegistUrl
+	Input Firstname FirstName
+	Input Lastname  LastName
+    Input Username  UserName
+	Input Email  Empty
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show Please provide a valid email address
+
+
+Error message Should Be Visible After Invalid Register Information With Empty Password
+	Navigate To Register Page  RegistUrl
+	Input Firstname FirstName
+	Input Lastname  LastName
+    Input Username  UserName
+	Input Email  eMail
+    Input Password  Empty
+    Submit Register Form
+	Verify That Error message should show Minimum length is 8 characters
+
+
+Error message Should Be Visible After Invalid Register Information With Invalid Firstname
+	Navigate To Register Page  RegistUrl
+	Input Firstname  Invalid_FirstName
+	Input Lastname  LastName
+    Input Username  UserName
+	Input Email  eMail
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show First name is too long (maximum is 127 characters)
+
+
+Error message Should Be Visible After Invalid Register Information With Invalid Lastname
+	Navigate To Register Page  RegistUrl
+	Input Firstname  FirstName
+	Input Lastname  Invalid_LastName
+    Input Username  UserName
+	Input Email  eMail
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show Last name is too long (maximum is 127 characters)
+
+
+Error message Should Be Visible After Invalid Register Information With Invalid Username
+	Navigate To Register Page  RegistUrl
+	Input Firstname  FirstName
+	Input Lastname  LastName
+    Input Username  Invalid_Username
+	Input Email  eMail
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show Username is too short (minimum is 2 characters) or
+											Please create a username with only alphanumeric characters or
+											Username is too long (maximum is 255 characters) or
+											Username is already taken
+
+
+Error message Should Be Visible After Invalid Register Information With Invalid Password
+
+	Navigate To Register Page  RegistUrl
+	Input Firstname  FirstName
+	Input Lastname  LastName
+    Input Username  UserName
+	Input Email  Invalid_eMail
+    Input Password  Password
+    Submit Register Form
+	Verify That Error message should show 1 error prohibited this user from being saved: Email has already been taken

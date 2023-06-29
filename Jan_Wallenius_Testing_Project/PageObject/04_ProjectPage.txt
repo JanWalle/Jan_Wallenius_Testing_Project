@@ -1,0 +1,95 @@
+
+### **Project functionality Testsuit Overview**
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	Project Test scenario. CRUD Operation: Create, Read, Update, Delete
+
+Pre Condition	Open Browser, Login
+Post Condition	Close All Browsers
+Tags	Project
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+HomeUrl = https://gitlab.com/
+BlankProjectUrl = https://gitlab.com/projects/new#blank_project
+TemplateProjectUrl = https://gitlab.com/projects/new#create_from_template
+ProjectName= XYZ
+ProjectSlug= XYZ
+UpdatedProjectName= XYZX
+Invalid_ProjectName= XYZZZ
+Invalid_ProjectSlug= XYZZZ
+Empty= 
+
+
+#******************** Test Cases *************************
+
+*** Test Cases ***
+
+# Positive Tests
+
+Create blank project
+	Navigate To Blank Project Page  BlankProjectUrl
+	Input Projectname  ProjectName
+	Select or Create Group
+	Input Projectslug  ProjectSlug
+    Select Project deployment target (optional)
+	Select Visibility Level
+	Select Project Configuration
+    Submit Create Blank Project Form
+    Verify That Page Should Contain message Project 'ProjectName' was successfully created
+
+
+Create template project 
+	Navigate To Template Project Page  TemplateProjectUrl
+	Select Project Template
+	Input Projectname  ProjectName
+	Select or Create Group
+	Input Projectslug  ProjectSlug
+    Input Project description (optional)
+	Select Visibility Level
+    Submit Create From Template Form
+    Verify That Page Should Contain 'ProjectName' and Selected Project Template Name
+
+
+Update name of template project
+	Navigate To Home Page  HomeUrl
+	Select Project  ProjectName
+	Select Settings > General
+	Input Updated Projectname  UpdatedProjectName
+	Select Save changes
+	Verify That Page Should Contain message Project 'UpdatedProjectName' was successfully updated
+
+
+Delete template project
+	Navigate To Home Page  HomeUrl
+	Select Project  UpdatedProjectName
+	Select Settings > General
+	Select Advanced
+	Select Delete project
+	Input required confirmation text
+	Select Yes, delete project
+	Verify That Page Should Contain message Project 'Project Group / UpdatedProjectName-deleted-########' will be deleted on YYYY-MM-DD
+
+
+# Negative Test
+
+Create a blank project with the previous same name
+	Navigate To Blank Project Page  BlankProjectUrl
+	Input Projectname  Invalid_ProjectName
+	Select or Create Group
+	Input Projectslug  Invalid_ProjectSlug
+    Select Project deployment target (optional)
+	Select Visibility Level
+	Select Project Configuration
+    Submit Create Blank Project Form
+    Verify That Page Should Contain message The form contains the following errors:
+											Project namespace name has already been taken
+											Name has already been taken
+											Path has already been taken
+
+
